@@ -9,6 +9,18 @@ function App() {
   const [contacts, setContasts] = useState([])
   const [filter, setFilter] = useState('')
 
+  useEffect(() => {
+    const contactss = localStorage.getItem('contacts')
+    const parsedContacts = JSON.parse(contactss)
+    if (parsedContacts) {
+      setContasts(parsedContacts)
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts))
+  }, [contacts])
+
   const formsSubmitHandler = ({ name, number }) => {
     const isPresentName = contacts.find(
       (contact) => contact.name.toLowerCase() === name.toLowerCase()
@@ -35,18 +47,6 @@ function App() {
   const changeFilter = (event) => {
     setFilter(event.currentTarget.value)
   }
-
-  useEffect(() => {
-    const contactss = localStorage.getItem('contacts')
-    const parsedContacts = JSON.parse(contactss)
-    if (parsedContacts) {
-      setContasts(parsedContacts)
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts))
-  }, [contacts])
 
   const normalizedFilter = filter.toLowerCase()
 
